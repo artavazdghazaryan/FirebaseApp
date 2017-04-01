@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FirebaseApp</string>
+
+    <!-- Strings related to login -->
+    <string name="sign_in_guest">Guest Sing In</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="resend_verification">Resend Verification?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="hint_password">password</string>
+    <string name="hint_email">email</string>
+    <string name="hint_password_confirm">confirm</string>
+    <string name="hint_username">user name</string>
+    <string name="error_email_required">Required</string>
+    <string name="error_password_required">Required</string>
+    <string name="progress_message">Loading...</string>
+    <string name="description_sign_in_icon">Image of ArmTale animated icon</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tv2">Welcome to Firebase</string>
+    <string name="tv1">Hello</string>
+    <string name="sign_up_failed">Sign Up Failed</string>
+    <string name="sign_up_success">Signed up with</string>
+
+</resources>
