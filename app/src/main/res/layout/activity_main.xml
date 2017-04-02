@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,18 +25,18 @@
             android:layout_alignParentRight="true"
 
             android:ems="20"
-            android:inputType="textShortMessage"
-
             android:hint="@string/et_message_board"
+
+            android:inputType="textShortMessage"
             android:textAlignment="center" />
 
         <Button
             android:id="@+id/b_send_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-
             android:layout_below="@+id/et_message"
+
+            android:layout_centerHorizontal="true"
             android:text="@string/button_send_to_the_board" />
 
         <TextView
@@ -74,6 +75,23 @@
             android:maxLines="15"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/forgot_password" />
+
+        <Button
+            android:id="@+id/b_send_to_cloud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_below="@+id/tv_board"
+            android:layout_centerHorizontal="true"
+            android:text="@string/button_send_to_cloud" />
+
+        <ImageView
+            android:id="@+id/ivCloudImage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@+id/b_send_to_cloud"
+
+            android:layout_alignParentBottom="true"
+            app:srcCompat="@drawable/firebase_16_logo" />
 
 
     </RelativeLayout>
