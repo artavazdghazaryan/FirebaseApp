@@ -1,5 +1,6 @@
 package com.artavazd.firebaseapp;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -97,25 +100,59 @@ public class MainActivity extends BaseActivity {
     }
 
     private void sendToCloud() {
-        Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-        StorageReference riversRef = mStorageRef.child("images/rivers.jpg");
 
-        riversRef.putFile(file)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+
+// Get the data from an ImageView as bytes
+            tvBoard.setDrawingCacheEnabled(true);
+            tvBoard.buildDrawingCache();
+            Bitmap bitmap = tvBoard.getDrawingCache();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+
+            //1 create an instance of FirebaseStorage:
+            //FirebaseStorage storage = FirebaseStorage.getInstance();
+            //2 Create a storage reference from our app gs://<your-bucket-name>
+            //StorageReference storageRef = storage.getReferenceFromUrl("gs://armtale-1077.appspot.com");
+
+
+            //Uri file = Uri.fromFile();
+            StorageReference imagesRef = mStorageRef.child(
+                    FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid()+"/images/" + "image.jpg");
+
+
+            UploadTask uploadTask = imagesRef.putBytes(data);
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                    Log.d(TAG+"OnError", exception.toString());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    try {
+
+                        Glide.with(getApplicationContext())
+                                .load(downloadUrl.toString())
+                                //.override(150, 150)
+                                .fitCenter()
+                                .into(ivCloudImage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
-    }
+                    Log.d(TAG+"OnSuccess", downloadUrl.toString());
+                }
+            });
+
+        }
+
 
     private void receiveFromCloud(StorageReference reference) {
         try {

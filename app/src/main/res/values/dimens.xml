@@ -5,4 +5,4 @@
     <dimen name="forgot_password">15sp</dimen>
     <dimen name="resend_verifcation">15sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-</resources>
+  </resources>
