@@ -22,5 +22,7 @@
     <string name="sign_up_failed">Sign Up Failed</string>
     <string name="sign_up_success">Signed up with</string>
     <string name="appen_sign_out">. Click to Sign Out</string>
+    <string name="et_message_board">Type a message</string>
+    <string name="button_send_to_the_board">Send to The Board</string>
 
 </resources>
