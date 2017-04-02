@@ -21,5 +21,6 @@
     <string name="tv1">Hello</string>
     <string name="sign_up_failed">Sign Up Failed</string>
     <string name="sign_up_success">Signed up with</string>
+    <string name="appen_sign_out">. Click to Sign Out</string>
 
 </resources>

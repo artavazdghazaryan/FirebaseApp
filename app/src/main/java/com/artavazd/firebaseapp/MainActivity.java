@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
         tv1.setText(getIntent().getExtras().getString(EXTRA_USER_NAME));
 
         tv2 = (TextView) findViewById(R.id.tv2);
-        tv2.append(". Sign out?");
+        tv2.append(getString(R.string.appen_sign_out));
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
