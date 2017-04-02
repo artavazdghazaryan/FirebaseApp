@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
                 finish();
             }
         });
-        //realtime-database UI
+        //RealTime Database UI
         database = FirebaseDatabase.getInstance();
         etMessage=(EditText)findViewById(R.id.et_message);
 
