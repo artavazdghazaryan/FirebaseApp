@@ -1,7 +1,6 @@
 package com.artavazd.firebaseapp;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 /**
  * A login screen that offers login via email/password.
@@ -55,7 +53,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 if (user != null) {
                     // User is signed in
                     startActivity(new Intent(SignInActivity.this, MainActivity.class)
-                            .putExtra(MainActivity.EXTRA_USER_NAME,user.getUid()));
+                            .putExtra(MainActivity.EXTRA_USER_ID,user.getUid()));
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
