@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +53,7 @@ public class MainActivity extends BaseActivity {
         etMessage=(EditText)findViewById(R.id.et_message);
 
         tvBoard=(TextView)findViewById(R.id.tv_board);
-        bindTVBoardToFirebase("message");
+        bindTVBoardToFirebaseChild("message");
         bSendMessage=(Button)findViewById(R.id.b_send_message);
         bSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,29 +94,61 @@ public class MainActivity extends BaseActivity {
         // Write a message to the database
         myRef = database.getReference(reference);
 
-        myRef.setValue(message);
+        myRef.push().setValue(message);
     }
 
-    private void bindTVBoardToFirebase(String reference){
+    private void bindTVBoardToFirebaseChild(String reference){
         // Read from the database
         myRef = database.getReference(reference);
-        myRef.addValueEventListener(new ValueEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                String s=tvBoard.getText().toString();
-                tvBoard.setText("");
-                tvBoard.append(value+"\n");
-                tvBoard.append(s);
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+
+                // A new comment has been added, add it to the displayed list
+                String message = dataSnapshot.getValue(String.class);
+
+                // [START_EXCLUDE]
+                // Update RecyclerView
+                tvBoard.append(message+"\n");
+                // [END_EXCLUDE]
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+
+                // A comment has changed, use the key to determine if we are displaying this
+                // comment and if so displayed the changed comment.
+
             }
-        });
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+
+                // A comment has changed, use the key to determine if we are displaying this
+                // comment and if so remove it.
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
+
+                // A comment has changed position, use the key to determine if we are
+                // displaying this comment and if so move it.
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException());
+
+            }
+        };
+        myRef.addChildEventListener(childEventListener);
     }
+
+
 }
