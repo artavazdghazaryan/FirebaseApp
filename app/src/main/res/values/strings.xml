@@ -21,5 +21,7 @@
     <string name="tv1">Hello</string>
     <string name="sign_up_failed">Sign Up Failed</string>
     <string name="sign_up_success">Signed up with</string>
+    <string name="et_message_board">Type a message</string>
+    <string name="button_send_to_the_board">Send to The Board</string>
 
 </resources>

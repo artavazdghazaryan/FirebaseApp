@@ -21,6 +21,10 @@
 #-keepattributes SourceFile,LineNumberTable
 -keepattributes Signature
 -keepattributes *Annotation*
+
+-keepclassmembers class com.artavazd.firebaseapp.** {
+  *;
+}
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
