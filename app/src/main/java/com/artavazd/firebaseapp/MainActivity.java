@@ -47,6 +47,22 @@ public class MainActivity extends BaseActivity {
                 finish();
             }
         });
+        //realtime-database UI
+        database = FirebaseDatabase.getInstance();
+        etMessage=(EditText)findViewById(R.id.et_message);
+
+        tvBoard=(TextView)findViewById(R.id.tv_board);
+        bindTVBoardToFirebase("message");
+        bSendMessage=(Button)findViewById(R.id.b_send_message);
+        bSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!validateMessage()){
+                    return;
+                }
+                sendMessage("message", etMessage.getText().toString());
+            }
+        });
         //realtime-database UI and binding
         database = FirebaseDatabase.getInstance();
         etMessage=(EditText)findViewById(R.id.et_message);
