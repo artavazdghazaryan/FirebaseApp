@@ -122,10 +122,7 @@ public class MainActivity extends BaseActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
-
-
-
-
+        
             UploadTask uploadTask = reference.putBytes(data);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -227,8 +224,7 @@ public class MainActivity extends BaseActivity {
                 // [START_EXCLUDE]
                 // Update RecyclerView
                 String oldMessages=tvBoard.getText().toString();
-                tvBoard.setText("");
-                tvBoard.append(message + "\n");
+                tvBoard.setText(message + "\n");
                 tvBoard.append(oldMessages);
                 // [END_EXCLUDE]
             }
