@@ -222,7 +222,6 @@ public class MainActivity extends BaseActivity {
                 String message = dataSnapshot.getValue(String.class);
 
                 // [START_EXCLUDE]
-                // Update RecyclerView
                 String oldMessages=tvBoard.getText().toString();
                 tvBoard.setText(message + "\n");
                 tvBoard.append(oldMessages);
