@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         setupUI();
-
     }
 
     private void setupUI() {
@@ -200,6 +199,8 @@ public class MainActivity extends BaseActivity {
     //Firebase Database variables and methods
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    //Firebase Storage variables and methods
+    private StorageReference mStorageRef;
 
     private void sendMessage(String reference,
                              String message) {
@@ -240,30 +241,24 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-
                 // A comment has changed, use the key to determine if we are displaying this
                 // comment and if so remove it.
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
-
                 // A comment has changed position, use the key to determine if we are
                 // displaying this comment and if so move it.
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "postComments:onCancelled", databaseError.toException());
-
             }
         };
         myRef.addChildEventListener(childEventListener);
     }
 
-    //Firebase Storage variables and methods
-    private StorageReference mStorageRef;
+
 }
