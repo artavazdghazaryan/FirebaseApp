@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
-        
+
             UploadTask uploadTask = reference.putBytes(data);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -232,10 +232,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-
                 // A comment has changed, use the key to determine if we are displaying this
                 // comment and if so displayed the changed comment.
-
             }
 
             @Override
@@ -259,6 +257,4 @@ public class MainActivity extends BaseActivity {
         };
         myRef.addChildEventListener(childEventListener);
     }
-
-
 }
