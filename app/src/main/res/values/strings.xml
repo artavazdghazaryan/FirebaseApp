@@ -24,5 +24,6 @@
     <string name="et_message_board">Type a message</string>
     <string name="button_send_to_the_board">Send to The Board</string>
     <string name="button_send_to_cloud">Send To Cloud Storage</string>
+    <string name="button_receive_from_cloud">Receive From Cloud</string>
 
 </resources>

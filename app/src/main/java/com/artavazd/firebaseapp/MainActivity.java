@@ -1,6 +1,7 @@
 package com.artavazd.firebaseapp;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivity {
     //Firebase Cloud Storage UI elements
 
     private Button bSendToCloud;
+    private Button bReceiveFromCloud;
     private ImageView ivCloudImage;
 
     @Override
@@ -89,21 +91,31 @@ public class MainActivity extends BaseActivity {
         //Storage UI & Firebase variable initiation
         mStorageRef = FirebaseStorage.getInstance().getReference();
         ivCloudImage = (ImageView) findViewById(R.id.ivCloudImage);
+
         bSendToCloud = (Button) findViewById(R.id.b_send_to_cloud);
         bSendToCloud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendToCloud();
+                sendToCloud(mStorageRef.child(
+                        FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getUid()+"/images/" + "image.jpg"));
+            }
+        });
+
+        bReceiveFromCloud = (Button) findViewById(R.id.b_receive_from_cloud);
+        bReceiveFromCloud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                receiveFromCloud(mStorageRef.child("images/" + "google_it.jpg"));
+
             }
         });
 
     }
 
-    private void sendToCloud() {
-
-
-
-// Get the data from an ImageView as bytes
+    private void sendToCloud(StorageReference reference) {
+            // Get the data from a TextView as bytes
             tvBoard.setDrawingCacheEnabled(true);
             tvBoard.buildDrawingCache();
             Bitmap bitmap = tvBoard.getDrawingCache();
@@ -112,19 +124,9 @@ public class MainActivity extends BaseActivity {
             byte[] data = baos.toByteArray();
 
 
-            //1 create an instance of FirebaseStorage:
-            //FirebaseStorage storage = FirebaseStorage.getInstance();
-            //2 Create a storage reference from our app gs://<your-bucket-name>
-            //StorageReference storageRef = storage.getReferenceFromUrl("gs://armtale-1077.appspot.com");
 
 
-            //Uri file = Uri.fromFile();
-            StorageReference imagesRef = mStorageRef.child(
-                    FirebaseAuth.getInstance()
-                    .getCurrentUser().getUid()+"/images/" + "image.jpg");
-
-
-            UploadTask uploadTask = imagesRef.putBytes(data);
+            UploadTask uploadTask = reference.putBytes(data);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -156,19 +158,21 @@ public class MainActivity extends BaseActivity {
 
     private void receiveFromCloud(StorageReference reference) {
         try {
-            File localFile = File.createTempFile("images", "jpg");
+           final File localFile = File.createTempFile("images", "jpg");
             reference.getFile(localFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             // Successfully downloaded data to local file
-                            // ...
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            ivCloudImage.setImageBitmap(bitmap);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle failed download
-                    // ...
+                    Log.d(TAG+"OnError", exception.toString());
+
                 }
             });
         }
@@ -222,7 +226,10 @@ public class MainActivity extends BaseActivity {
 
                 // [START_EXCLUDE]
                 // Update RecyclerView
+                String oldMessages=tvBoard.getText().toString();
+                tvBoard.setText("");
                 tvBoard.append(message + "\n");
+                tvBoard.append(oldMessages);
                 // [END_EXCLUDE]
             }
 
